@@ -1,1 +1,1 @@
-# CNN---Project
+[Documentação](https://docs.google.com/document/d/1xOjK2PFjjLTQTePANPxJsayx_w8NkcWwXf-uKn67A-w/edit?usp=sharing)
