@@ -4,9 +4,25 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pillow = "*"
+numpy = "<1.24"
 ipykernel = "*"
+jupyter = "*"
+nbconvert = "*"
+pandoc = "*"
+matplotlib = "*"
+opencv-python = "*"
+tqdm = "*"
+scikit-learn = "*"
+scikit-image = "*"
+torch = "*"
+torchsummary = "*"
+tensorboard = "*"
+torchvision = "*"
 
 [dev-packages]
+ipykernel = "*"
+notebook = "*"
 
 [requires]
 python_version = "3.11"
