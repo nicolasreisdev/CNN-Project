@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SojaScan</string>
+    <string name="Galery">Galery</string>
+    <string name="Camera">Camera</string>
 </resources>
