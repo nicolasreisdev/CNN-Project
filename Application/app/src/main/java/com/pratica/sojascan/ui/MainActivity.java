@@ -18,7 +18,7 @@ import com.pratica.sojascan.R;
 import com.pratica.sojascan.models.Classifier;
 
 public class MainActivity extends AppCompatActivity {
-    private final ImageView imageView = findViewById(R.id.imageView);
+    private  ImageView imageView;
     private final Classifier modelCNN = new Classifier();
 
     // imagem da galeria
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageView = findViewById(R.id.imageView);
     }
 
 
