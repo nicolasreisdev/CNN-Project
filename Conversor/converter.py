@@ -14,7 +14,7 @@ try:
     else:
         my_device = torch.device("cpu")
 
-    model_architecture.load_state_dict(torch.load(input_pkl_file, map_location=my_device)) # carregar o modelo treinado
+    model = torch.load(input_pkl_file, map_location='cpu', weights_only=False) # carregar o modelo treinado
     
     model_architecture.eval() # definir o modelo para o modo de avaliação
 
