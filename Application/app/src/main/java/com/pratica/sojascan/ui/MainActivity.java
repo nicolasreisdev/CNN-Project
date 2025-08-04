@@ -2,10 +2,13 @@ package com.pratica.sojascan.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,37 +20,52 @@ import androidx.core.content.ContextCompat;
 import com.pratica.sojascan.R;
 import com.pratica.sojascan.models.Classifier;
 
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
-    private  ImageView imageView;
-    private final Classifier modelCNN = new Classifier();
+    private ImageView imageView;
+    private Classifier modelCNN;
+    private TextView resultTextView;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        imageView = findViewById(R.id.imageView);
+        resultTextView = findViewById(R.id.result);
+        modelCNN = new Classifier(this, "squeezenet_mobile.ptl", "labels.txt");
+    }
 
     // imagem da galeria
     private final ActivityResultLauncher<String> galleryLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 Log.i("GALERIA", "Selecionando imagem");
                 if (uri != null) {
-                //    A 'uri' contém o caminho para a imagem selecionada
-                    Log.i("GALERIA", "Imagem selecionada");
-                    imageView.setImageURI(uri);
-                     // chamar  modelo para classificar  a imagem
-                    modelCNN.loadModel();
-                    modelCNN.preprocess();
-                    modelCNN.predict();
+                    try {
+                        // 1. Converte a Uri recebida em um Bitmap
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        // 2. Exibe o bitmap no ImageView
+                        imageView.setImageBitmap(bitmap);
+                        // 3. PASSA O BITMAP PARA O MÉTODO DE CLASSIFICAÇÃO
+                        classifyImage(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Falha ao carregar imagem da galeria.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
-     // tirar uma foto (retorna um Bitmap)
+    // tirar uma foto (retorna um Bitmap)
     private final ActivityResultLauncher<Void> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
                 Log.i("CAMERA", "Tirando foto");
                 if (bitmap != null) {
-                //  O 'bitmap' contém a imagem capturada
+                    //  O 'bitmap' contém a imagem capturada
                     Log.i("CAMERA", "Foto capturada");
                     imageView.setImageBitmap(bitmap);
                     // chamar modelo para classificar a imagem
-                    modelCNN.loadModel();
-                    modelCNN.preprocess();
-                    modelCNN.predict();
+                    classifyImage(bitmap);
                 }
             });
 
@@ -56,22 +74,26 @@ public class MainActivity extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 // Callback: O que fazer após o usuário responder à solicitação de permissão
                 if (isGranted) {
-                  //   Permissão concedida, podemos abrir a câmera
+                    //   Permissão concedida, podemos abrir a câmera
                     cameraLauncher.launch(null);
                 } else {
-                  //   Permissão negada, informe o usuário
+                    //   Permissão negada, informe o usuário
                     Toast.makeText(this, "Permissão de câmera negada", Toast.LENGTH_SHORT).show();
                 }
             });
 
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        imageView = findViewById(R.id.imageView);
+    // Método para a classificação
+    private void classifyImage(Bitmap bitmap) {
+        if (modelCNN == null) {
+            Toast.makeText(this, "Erro: Classificador não foi inicializado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        resultTextView.setText("Classificando...");
+        String result = modelCNN.predict(bitmap);
+        resultTextView.setText("Diagnóstico: " + result);
     }
+
 
 
     public void onSelectCamera(View v) {

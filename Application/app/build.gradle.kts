@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-
+    implementation("org.pytorch:pytorch_android_lite:2.1.0")
+    implementation("org.pytorch:pytorch_android_torchvision_lite:2.1.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

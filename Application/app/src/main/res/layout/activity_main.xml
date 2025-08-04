@@ -15,6 +15,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -35,6 +36,17 @@
             android:onClick="onSelectGalery"
             />
     </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Buttons"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/result"
+        android:text="Resultado"
+        />
 
 
 </RelativeLayout>

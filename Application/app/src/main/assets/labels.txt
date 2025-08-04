@@ -1,0 +1,11 @@
+BacterialBlight
+CercosporaLeafBlight
+DowneyMildew
+Frogeye
+Healthy
+PotassiumDeficiency
+SoybeanRust
+TargetSpot
+UnusedCercosporaLeafBlight
+UnusedHealthy
+UnusedSoybeanRust
