@@ -6,7 +6,6 @@ NUM_CLASSES = 11
 
 input_pkl_file = './ASDID/SqueezeNet-ASDID-91.70.pkl'
 output_ptl_file = './modeloMobile/squeezenet_mobile.ptl'
-model_architecture = models.squeezenet1_0(num_classes=NUM_CLASSES)
 
 try:
     if torch.cuda.is_available():
@@ -14,11 +13,11 @@ try:
     else:
         my_device = torch.device("cpu")
 
-    model = torch.load(input_pkl_file, map_location='cpu', weights_only=False) # carregar o modelo treinado
+    model = torch.load(input_pkl_file, map_location=my_device, weights_only=False) # carregar o modelo treinado
     
-    model_architecture.eval() # definir o modelo para o modo de avaliação
+    model.eval() # definir o modelo para o modo de avaliação
 
-    scripted_model = torch.jit.script(model_architecture) # converter o modelo para o formato TorchScript
+    scripted_model = torch.jit.script(model) # converter o modelo para o formato TorchScript
 
     optimized_model = optimize_for_mobile(scripted_model) # otimizar o modelo para dispositivos móveis
 
