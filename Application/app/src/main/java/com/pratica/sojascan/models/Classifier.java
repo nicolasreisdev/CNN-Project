@@ -34,16 +34,21 @@ public class Classifier {
     public Classifier(Context context, String modelName, String labelName) {
         try {
             // Carrega o modelo e os rótulos do diretório 'assets'.
+            Log.i("Teste", "Iniciando modelo");
             model = Module.load(assetFilePath(context, modelName));
+            Log.i("Teste", "Model:" + model);
             loadLabels(context, labelName);
+            Log.i("Teste", "Labels:" + labels);
+            Log.i("Teste", "modelo carregado com sucesso");
         } catch (IOException e) {
-            Log.e("Classifier", "Erro ao carregar o modelo ou os rótulos.", e);
+            Log.e("Teste", "Erro ao carregar o modelo ou os rótulos.", e);
         }
     }
 
     private void loadLabels(Context context, String labelName) throws IOException {
         labels = new ArrayList<>();
         InputStream is = context.getAssets().open(labelName);
+        Log.i("Teste", "Carregando rótulos");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -54,10 +59,12 @@ public class Classifier {
 
     public String predict(Bitmap bitmap) {
         if (model == null || labels == null) {
+            Log.i("Teste", "Model" + model + "labels" + labels);
             return "Erro: Modelo ou rótulos não carregados.";
         }
 
         // Redimensiona o bitmap para o tamanho de entrada do modelo.
+        Log.i("Teste", "Iniciando predição");
         Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, INPUT_IMAGE_WIDTH, INPUT_IMAGE_HEIGHT, true);
 
         // Converte o Bitmap para um Tensor e normaliza seus valores.
@@ -67,9 +74,12 @@ public class Classifier {
                 NORM_STD
         );
 
+        Log.i("Teste", "Imagem normalizada");
+
         // Passa o tensor de entrada pelo modelo.
         final Tensor outputTensor = model.forward(IValue.from(inputTensor)).toTensor();
 
+        Log.i("Teste", "Imagem transformada em tensor");
         // Pega as pontuações de saída do tensor.
         final float[] scores = outputTensor.getDataAsFloatArray();
 
@@ -83,6 +93,8 @@ public class Classifier {
             }
         }
 
+        Log.i("Teste", "Predição: " + labels.get(maxScoreIdx));
+
         // Retorna o nome da classe correspondente ao índice encontrado.
         return labels.get(maxScoreIdx);
     }
@@ -94,10 +106,11 @@ public class Classifier {
      */
     private static String assetFilePath(Context context, String assetName) throws IOException {
         File file = new File(context.getFilesDir(), assetName);
+        Log.i("Teste", "Carregando PyTorch");
         if (file.exists() && file.length() > 0) {
             return file.getAbsolutePath();
         }
-
+        Log.i("Teste", "Carregando PyTorch 2");
         try (InputStream is = context.getAssets().open(assetName)) {
             try (OutputStream os = new FileOutputStream(file)) {
                 byte[] buffer = new byte[4 * 1024];
@@ -107,7 +120,15 @@ public class Classifier {
                 }
                 os.flush();
             }
+            catch (IOException e) {
+                Log.e("Teste", "Erro ao copiar o arquivo do assets.", e);
+            }
+            Log.i("Teste", "Modelo carregado");
             return file.getAbsolutePath();
+        }
+        catch (IOException e) {
+            Log.e("Teste", "Erro ao copiar o arquivo do assets.", e);
+            throw e;
         }
     }
 

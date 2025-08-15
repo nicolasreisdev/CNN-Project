@@ -34,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.imageView);
         resultTextView = findViewById(R.id.result);
-        modelCNN = new Classifier(this, "squeezenet_mobile.ptl", "labels.txt");
+        modelCNN = new Classifier(this, "testesqueezenet_mobile.ptl", "labels.txt");
+        Log.i("Teste", "Iniciando app");
     }
 
     // imagem da galeria
     private final ActivityResultLauncher<String> galleryLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-                Log.i("GALERIA", "Selecionando imagem");
+                Log.i("Teste", "Selecionando imagem da galeria");
                 if (uri != null) {
                     try {
                         // 1. Converte a Uri recebida em um Bitmap
@@ -59,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
     // tirar uma foto (retorna um Bitmap)
     private final ActivityResultLauncher<Void> cameraLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
-                Log.i("CAMERA", "Tirando foto");
+                Log.i("Teste", "Tirando foto com a camera");
                 if (bitmap != null) {
                     //  O 'bitmap' contém a imagem capturada
-                    Log.i("CAMERA", "Foto capturada");
+                    Log.i("Teste", "Foto capturada");
                     imageView.setImageBitmap(bitmap);
                     // chamar modelo para classificar a imagem
                     classifyImage(bitmap);
@@ -97,21 +98,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onSelectCamera(View v) {
-        Log.i("CAMERA", "Selecionando camera");
+        Log.i("Teste", "Selecionando camera");
         // Verifica se a permissão de câmera já foi concedida
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             // Se já tiver permissão, abre a câmera diretamente
-            Log.i("CAMERA", "Permissão concedida");
+            Log.i("Teste", "Permissão concedida");
             cameraLauncher.launch(null);
         } else {
-            Log.i("CAMERA", "Permissão pede permissão");
+            Log.i("Teste", "Permissão pede permissão");
             // Se não tiver permissão, solicita ao usuário
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
 
     public void onSelectGalery(View v) {
-        Log.i("GALERIA", "Selecionando galeria");
+        Log.i("Teste", "Selecionando galeria");
         // imagens da galeria
         galleryLauncher.launch("image/*");
     }

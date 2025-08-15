@@ -29,11 +29,24 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+//    packagingOptions {
+//        exclude("META-INF/DEPENDENCIES")
+//        exclude("META-INF/LICENSE")
+//        exclude("META-INF/LICENSE.txt")
+//        exclude("META-INF/license.txt")
+//        exclude("META-INF/NOTICE")
+//        exclude("META-INF/NOTICE.txt")
+//        exclude("META-INF/notice.txt")
+//        exclude("META-INF/ASL2.0")
+//        exclude("META-INF/*.kotlin_module")
+//    }
 }
 
 dependencies {
-    implementation("org.pytorch:pytorch_android_lite:2.1.0")
-    implementation("org.pytorch:pytorch_android_torchvision_lite:2.1.0")
+    //implementation("org.pytorch:pytorch_android_lite:2.1.0")
+    implementation("org.pytorch:pytorch_android:2.1.0")
+    implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
