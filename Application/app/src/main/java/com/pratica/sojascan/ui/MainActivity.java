@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.imageView);
         resultTextView = findViewById(R.id.result);
-        modelCNN = new Classifier(this, "testesqueezenet_mobile.ptl", "labels.txt");
+        modelCNN = new Classifier(this, "squeezenet_mobile_2.ptl", "labels.txt");
         Log.i("Teste", "Iniciando app");
     }
 
