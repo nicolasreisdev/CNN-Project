@@ -31,6 +31,16 @@ public class Classifier {
     private static final int INPUT_IMAGE_WIDTH = 224;
     private static final int INPUT_IMAGE_HEIGHT = 224;
 
+    public static class Result {
+        public final String predictedLabel;
+        public final float confidence;
+
+        public Result(String predictedLabel, float confidence) {
+            this.predictedLabel = predictedLabel;
+            this.confidence = confidence;
+        }
+    }
+
     public Classifier(Context context, String modelName, String labelName) {
         try {
             // Carrega o modelo e os rótulos do diretório 'assets'.
@@ -57,10 +67,32 @@ public class Classifier {
         }
     }
 
-    public String predict(Bitmap bitmap) {
+    private float[] softmax(float[] logits) {
+        float[] probabilities = new float[logits.length];
+        float maxLogit = -Float.MAX_VALUE;
+        for (float logit : logits) {
+            if (logit > maxLogit) {
+                maxLogit = logit;
+            }
+        }
+
+        float sumExp = 0.0f;
+        for (int i = 0; i < logits.length; i++) {
+            probabilities[i] = (float) Math.exp(logits[i] - maxLogit);
+            sumExp += probabilities[i];
+        }
+
+        for (int i = 0; i < probabilities.length; i++) {
+            probabilities[i] /= sumExp;
+        }
+
+        return probabilities;
+    }
+
+    public Result predict(Bitmap bitmap) {
         if (model == null || labels == null) {
             Log.i("Teste", "Model" + model + "labels" + labels);
-            return "Erro: Modelo ou rótulos não carregados.";
+            return null;
         }
 
         // Redimensiona o bitmap para o tamanho de entrada do modelo.
@@ -95,8 +127,14 @@ public class Classifier {
 
         Log.i("Teste", "Predição: " + labels.get(maxScoreIdx));
 
-        // Retorna o nome da classe correspondente ao índice encontrado.
-        return labels.get(maxScoreIdx);
+        String predictedLabel = labels.get(maxScoreIdx);
+
+        //Calcula a confiança usando a função Softmax
+        final float[] probabilities = softmax(scores);
+        final float confidence = probabilities[maxScoreIdx];
+
+        // Retorna o novo objeto Result
+        return new Result(predictedLabel, confidence);
     }
 
     /**
