@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         String outputText = String.format(Locale.US,
-                "Diagnóstico: %s\nConfiança: %.1f%%",
+                "Result: %s\nConfiability: %.1f%%",
                 result.predictedLabel,
                 result.confidence * 100.0f
         );

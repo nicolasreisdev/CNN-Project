@@ -1,4 +1,4 @@
-package com.pratica.sojascan.models;
+    package com.pratica.sojascan.models;
 
 
 import android.content.Context;
