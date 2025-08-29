@@ -23,6 +23,7 @@ import com.pratica.sojascan.models.Classifier;
 import java.io.IOException;
 import java.util.Locale;
 
+
 public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     private Classifier modelCNN;
@@ -91,16 +92,19 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Erro: Classificador não foi inicializado.", Toast.LENGTH_SHORT).show();
             return;
         }
-        String classifying = "Classificando...";
+        String classifying = "Classifying...";
         resultTextView.setText(classifying);
+        long inico = System.nanoTime();
         Classifier.Result result = modelCNN.predict(bitmap);
+        long fim = System.nanoTime();
+        long tempoExecucao = (fim - inico) / 1000000;
         if (result == null) {
             String toastText = "Não foi possível classificar.";
             resultTextView.setText(toastText);
             return;
         }
         String outputText = String.format(Locale.US,
-                "Result: %s\nConfiability: %.1f%%",
+                "Result: %s\nConfiability: %.1f%%\nTime: %d ms",
                 result.predictedLabel,
                 result.confidence * 100.0f
         );
