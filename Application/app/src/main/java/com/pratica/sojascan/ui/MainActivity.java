@@ -106,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
         String outputText = String.format(Locale.US,
                 "Result: %s\nConfiability: %.1f%%\nTime: %d ms",
                 result.predictedLabel,
-                result.confidence * 100.0f
+                result.confidence * 100.0f,
+                tempoExecucao
         );
 
         resultTextView.setText(outputText);

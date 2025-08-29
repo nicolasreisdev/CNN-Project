@@ -129,10 +129,12 @@ public class Classifier {
 
         String predictedLabel = labels.get(maxScoreIdx);
 
+        Log.i("Teste", "Predição feita.");
         //Calcula a confiança usando a função Softmax
         final float[] probabilities = softmax(scores);
         final float confidence = probabilities[maxScoreIdx];
 
+        Log.i("Teste", "Confiança calculada.");
         // Retorna o novo objeto Result
         return new Result(predictedLabel, confidence);
     }

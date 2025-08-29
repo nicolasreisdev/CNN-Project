@@ -45,7 +45,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:id="@+id/result"
-        android:text="Resultado"
+        android:text="Result"
         />
 
 
