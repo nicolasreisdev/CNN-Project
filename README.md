@@ -19,4 +19,5 @@ Investigar redes mais leves, capazes de obter resultados comparáveis aos das ar
  - [ASDID](https://datadryad.org/dataset/doi:10.5061/dryad.41ns1rnj3)
 
 ## Para mais detalhes sobre o projeto
- - [Relatório](./CNN/Classificação_de_Doenças_em_Plantas_de_Soja.pdf)
+ - [Relatório - PT](./CNN/Classificação_de_Doenças_em_Plantas_de_Soja.pdf)
+ - [Article - EN](./SOJA.pdf)
